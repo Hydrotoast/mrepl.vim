@@ -7,7 +7,7 @@ let s:repl_job_id = -2
 " The name of the REPL buffer.
 let s:repl_bufname = '__SCALA_REPL__'
 
-function s:GetOrCreateReplBuffer()
+function! s:GetOrCreateReplBuffer()
 
   let repl_buf_nr = bufnr(s:repl_bufname)
 
@@ -24,7 +24,7 @@ function s:GetOrCreateReplBuffer()
   return
 endfunction
 
-function s:OpenReplWindow()
+function! s:OpenReplWindow()
 
   " Get the buffer number of the REPL buffer
   let repl_buf_nr = s:GetOrCreateReplBuffer()
@@ -38,7 +38,7 @@ function s:OpenReplWindow()
   endif
 endfunction
 
-function s:SendSelectedLinesToRepl(visual) range
+function! s:SendSelectedLinesToRepl(visual) range
 
   " Open an REPL window if it does not exist.
   if bufexists(s:repl_bufname) == 0
