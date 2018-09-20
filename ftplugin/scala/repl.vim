@@ -19,6 +19,7 @@ function! s:GetOrCreateReplBuffer()
   elseif repl_buf_nr == -1
     belowright vnew
     let s:repl_job_id = termopen(g:scala_repl_command)
+    normal! G
     execute 'file ' . s:repl_bufname
     return bufnr('%')
   return
