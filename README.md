@@ -30,6 +30,13 @@ To switch the REPL mode, we use the command
 
 where the `{mode}` is the REPL mode to switch to.
 
+For example, we can switch to the `scala` mode to evaluate source code in a
+Scala REPL or spark-shell.
+
+```
+:ReplSwitch scala
+```
+
 ### Configuration
 
 To use this plugin, the `mapleader` option must be set in your `~/.vimrc` (or 
