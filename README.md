@@ -49,11 +49,3 @@ let mapleader=","
 Note that the `<leader>` variable refers to the key bound to the `mapleader`
 option in key mappings.
 
-**Repl modes.** We declare new REPL modes as follows.
-
-```
-ReplMode {mode}
-ReplModeLine {mode} {header} {footer}
-ReplModeBlock {mode} {header} {footer}
-```
-
