@@ -1,21 +1,52 @@
+
+" We keep a registry of REPL modes with state that is encapsulated by the
+" script.
+
+if !exists('s:repl_modes')
+  let s:repl_modes = {}
+end
+
+function! s:ReplModeInit(mode)
+
+  let s:repl_modes[a:mode] = {}
+  let s:repl_modes[a:mode].line = {}
+  let s:repl_modes[a:mode].block = {}
+  let s:repl_modes[a:mode].line.header = ''
+  let s:repl_modes[a:mode].line.footer = "\n"
+  let s:repl_modes[a:mode].block.header = ''
+  let s:repl_modes[a:mode].block.footer = "\n"
+
+endfunction
+
+function! s:ReplModeSetLine(mode, header, footer)
+
+  let s:repl_modes[a:mode].line.header = a:header
+  let s:repl_modes[a:mode].line.footer = a:footer
+
+endfunction
+
+function! s:ReplModeSetBlock(mode, header, footer)
+
+  let s:repl_modes[a:mode].block.header = a:header
+  let s:repl_modes[a:mode].block.footer = a:footer
+
+endfunction
+
+" Initialize the terminal REPL mode.
+call <SID>ReplModeInit('term')
+
+" Initialize the Scala REPL mode.
+call <SID>ReplModeInit('scala')
+call <SID>ReplModeSetBlock('scala', ":paste\n", nr2char(4))
+
 " This script manages the following state per buffer.
 "
 " - *b:repl_channel_id* The channel id for the bound REPL buffer.
-"
-" The following options are available to configure how lines and blocks are
-" sent to a terminal.
-"
-" - *b:repl_line_header* The header for a line frame.
-" - *b:repl_line_footer* The footer for a line frame.
-" - *b:repl_block_header* The header for a block frame.
-" - *b:repl_block_footer* The footer for a block frame.
+" - *b:repl_mode* The current REPL mode.
 
-" The default frame configuration for terminals.
-
-let b:repl_line_header = ''
-let b:repl_line_footer = "\n"
-let b:repl_block_header = ''
-let b:repl_block_footer = "\n"
+if !exists('b:repl_mode')
+  let b:repl_mode = "term"
+end
 
 function! s:ReplBind(repl_bufname) abort
 
@@ -47,17 +78,14 @@ function! s:ReplSendLine(...) abort
     return
   end
 
-  " The optional header for the frame to send.
-  let header = get(a:, 1, '')
-
-  " The optional footer for the frame to send.
-  let footer = get(a:, 2, '')
+  " Get the current REPL mode.
+  let repl_mode = get(s:repl_modes, b:repl_mode, 'term')
 
   " Get the current line from the source buffer.
   let payload = getline(line('.'))
 
   " Prepare the frame.
-  let frame = b:repl_line_header . payload . b:repl_line_footer 
+  let frame = repl_mode.line.header . payload . repl_mode.line.footer
 
   " Send the frame to the REPL.
   call chansend(b:repl_channel_id, frame)
@@ -73,29 +101,55 @@ function! s:ReplSendBlock(...) abort range
     return
   end
 
+  " Get the current REPL mode.
+  let repl_mode = get(s:repl_modes, b:repl_mode, 'term')
+
   " Get the visually selected lines in the source buffer.
   let lines = getline(a:firstline, a:lastline)
   let payload = join(lines, "\n") . "\n"
 
   " Prepare the frame.
-  let frame = b:repl_block_header . payload . b:repl_block_footer
+  let frame = repl_mode.block.header . payload . repl_mode.block.footer
 
   " Send the frame to the REPL.
   call chansend(b:repl_channel_id, frame)
 
 endfunction
 
+function! s:ReplSwitch(mode) abort
+  
+  if !exists('b:repl_channel_id')
+    echoerr 'Failed to send block to the terminal. '
+          \ . 'The terminal is not bound. '
+          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
+    return
+  end
+
+  if !has_key(s:repl_modes, a:mode)
+    echoerr 'Failed to switch the REPL to ' . a:mode . '.'
+          \ . 'The mode has not been registered.'
+    return
+  end
+
+  let b:repl_mode = a:mode
+
+endfunction
+
 " Binds a REPL to the current buffer by the buffer name of the REPL.
-command -nargs=1 -complete=buffer ReplBind
+command! -nargs=1 -complete=buffer ReplBind
       \ call <SID>ReplBind(<q-args>)
 
 " Sends a line to the bound REPL.
-command ReplSendLine
+command! ReplSendLine
       \ call <SID>ReplSendLine()
 
 " Sends a block to the bound REPL.
-command -range ReplSendBlock
+command! -range ReplSendBlock
       \ <line1>,<line2>call <SID>ReplSendBlock()
+
+" Switches the REPL mode.
+command! -nargs=1 ReplSwitchMode
+      \ call <SID>ReplSwitch(<q-args>)
 
 " Default mappings.
 nnoremap <silent> <buffer> <leader>e :ReplSendLine<CR>
