@@ -22,6 +22,14 @@ To evaluate lines in the bound REPL, we use the default bindings.
 
 See the **Configuration** section to configure the `<leader>` key.
 
+To switch the REPL mode, we use the command
+
+```
+:ReplSwitch {mode}
+```
+
+where the `{mode}` is the REPL mode to switch to.
+
 ### Configuration
 
 To use this plugin, the `mapleader` option must be set in your `~/.vimrc` (or 
