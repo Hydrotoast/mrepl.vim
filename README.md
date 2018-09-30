@@ -40,7 +40,7 @@ Scala REPL or spark-shell.
 ### Configuration
 
 To use this plugin, the `mapleader` option must be set in your `~/.vimrc` (or 
-`~/.config/nvim/init.vim). For example, we can bind it to `,`.
+`~/.config/nvim/init.vim)`. For example, we can bind it to `,`.
 
 ```
 let mapleader=","
