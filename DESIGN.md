@@ -15,12 +15,21 @@ Note that a REPL may have many source buffers associated with it, but it is
 unaware of them. As a special case, a REPL may not have any source buffers
 associated with it.
 
+A REPL is in one of many modes, the _REPL mode_. The mode determines the
+_REPL protocol_ for reading source code from the source buffer.
+
+A REPL protocol consists of a header and footer data for reading source code,
+which are necessary before evaluation.
+
 ### System operations
 
 Given the sytem model, the following system operations are available.
 
 *Bind REPL.* Given a source buffer and an existing REPL, bind the source buffer
 to the REPL, so that the source buffer can copy source code to it.
+
+*Switch REPL mode.* Given a source buffer with a bound REPL, switch the REPL
+mode, so that we can change the REPL protocol.
 
 *Evaluate line.* Given a source buffer, evaluate a line in its bound REPL if it
 exists. Otherwise, display a warning.
