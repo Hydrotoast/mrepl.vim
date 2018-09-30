@@ -1,10 +1,10 @@
-# vim-mrepl
+## vim-mrepl
 
 Adds modal REPL protocol to Neovim. A REPL protocol defines a format for how
 line and block commands are issued to a REPL. A modal protocol changes its
 behavior based on the mode.
 
-## Configuration
+### Configuration
 
 To use this plugin, the `mapleader` option must be set in your `~/.vimrc` (or 
 `~/.config/nvim/init.vim). For example, we can bind it to `,`.
@@ -16,7 +16,7 @@ let mapleader=","
 Note that the `<leader>` variable refers to the key bound to the `mapleader`
 option in key mappings.
 
-## Usage
+### Usage
 
 To begin using `vim-mrepl`, we need to bind the buffer to an existing terminal.
 
@@ -34,7 +34,7 @@ To evaluate lines in the bound REPL, we use the default bindings.
 
 See the **Configuration** section to configure the `<leader>` key.
 
-# System model
+## System model
 
 Suppose that we have a buffer with source code, the _source buffer_, and a
 terminal that can evaluate lines of source code, the _REPL_. As a constraint, we
@@ -51,7 +51,7 @@ Note that a REPL may have many source buffers associated with it, but it is
 unaware of them. As a special case, a REPL may not have any source buffers
 associated with it.
 
-## System operations
+### System operations
 
 Given the sytem model, the following system operations are available.
 
