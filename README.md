@@ -12,8 +12,7 @@ To begin using `vim-mrepl`, we need to bind the buffer to an existing terminal.
 :ReplBind {repl_bufname}
 ```
 
-Note that `{repl_bufname}` may be tab-completed across buffers, but only
-terminal buffers are valid.
+Note that `{repl_bufname}` may be tab-completed.
 
 To evaluate lines in the bound REPL, we use the default bindings.
 
