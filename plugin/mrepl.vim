@@ -135,8 +135,14 @@ function! s:ReplSwitch(mode) abort
 
 endfunction
 
+function! s:ReplCompleteTerminalNames(A, P, L)
+
+  " Retrieve the terminal names from the registry.
+  return TerminalRegistryListNames()
+endfunction
+
 " Binds a REPL to the current buffer by the buffer name of the REPL.
-command! -nargs=1 -complete=buffer ReplBind
+command! -nargs=1 -complete=customlist,<SID>ReplCompleteTerminalNames ReplBind
       \ call <SID>ReplBind(<q-args>)
 
 " Sends a line to the bound REPL.
