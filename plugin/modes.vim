@@ -98,5 +98,5 @@ function! s:ReplCompleteMode(A, P, L)
 endfunction
 
 " Switches the REPL mode.
-command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplSwitchMode
+command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplSwitch
       \ call <SID>ReplSwitch(<q-args>)
