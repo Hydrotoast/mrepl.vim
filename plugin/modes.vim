@@ -100,3 +100,7 @@ endfunction
 " Switches the REPL mode.
 command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplSwitch
       \ call <SID>ReplSwitch(<q-args>)
+
+" Default mappings.
+nnoremap <silent> <buffer> <leader>rs :ReplSwitch 
+

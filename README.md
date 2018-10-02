@@ -16,8 +16,8 @@ Note that `{repl_bufname}` may be tab-completed.
 
 To evaluate lines in the bound REPL, we use the default bindings.
 
-- `<leader>e`. Evaluates the line under the cursor in the REPL.
-- `<leader>e`. Evaluates the selected lines in the REPL.
+- `<leader>re`. Evaluates the line under the cursor in the REPL.
+- `<leader>re`. Evaluates the selected lines in the REPL.
 
 See the **Configuration** section to configure the `<leader>` key.
 
