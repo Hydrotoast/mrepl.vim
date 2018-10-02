@@ -38,6 +38,10 @@ call <SID>ReplModeInit('term')
 call <SID>ReplModeInit('scala')
 call <SID>ReplModeSetBlock('scala', ":paste\n", nr2char(4))
 
+" Initialize the Julia REPL mode.
+call <SID>ReplModeInit('julia')
+call <SID>ReplModeSetBlock('julia', '', '')
+
 " The current REPL mode.
 if !exists('b:repl_mode')
   let b:repl_mode = "term"
