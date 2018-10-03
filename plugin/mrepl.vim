@@ -85,7 +85,7 @@ command! -range ReplSendBlock
       \ <line1>,<line2>call <SID>ReplSendBlock()
 
 " Default mappings.
-nnoremap <silent> <buffer> <leader>rb :ReplBind 
-nnoremap <silent> <buffer> <leader>re :ReplSendLine<CR>
-vnoremap <silent> <buffer> <leader>re :ReplSendBlock<CR>
+nnoremap <silent> <leader>rb :ReplBind 
+nnoremap <silent> <leader>re :ReplSendLine<CR>
+vnoremap <silent> <leader>re :ReplSendBlock<CR>
 
