@@ -72,6 +72,29 @@ function! s:ReplCompleteTerminalNames(A, P, L)
   return TerminalRegistryListNames()
 endfunction
 
+function! s:ReplTerminalNamesListInput()
+
+  " Get the terminal list.
+  let terminal_list = TerminalRegistryListNames()
+
+  " Create the inputlist prompt.
+  let terminal_list_prompt = map(copy(terminal_list), {k, v -> (k + 1) . '. ' . v})
+
+  " Prompt for a terminal.
+  echom "Choose a terminal:"
+  let choice = inputlist(terminal_list_prompt)
+  let n = len(terminal_list)
+  while choice == 0 || choice > n
+    redraw!
+    echo "Invalid terminal. Choose a terminal:"
+    let choice = inputlist(terminal_list_prompt)
+  endwhile
+
+  " Return the terminal.
+  return terminal_list[choice - 1]
+endfunction
+
+
 " Binds a REPL to the current buffer by the buffer name of the REPL.
 command! -nargs=1 -complete=customlist,<SID>ReplCompleteTerminalNames ReplBind
       \ call <SID>ReplBind(<q-args>)
@@ -85,7 +108,7 @@ command! -range ReplSendBlock
       \ <line1>,<line2>call <SID>ReplSendBlock()
 
 " Default mappings.
-nnoremap <silent> <leader>rb :ReplBind 
 nnoremap <silent> <leader>re :ReplSendLine<CR>
 vnoremap <silent> <leader>re :ReplSendBlock<CR>
+nnoremap <silent> <leader>rb :call <SID>ReplBind(<SID>ReplTerminalNamesListInput())<CR> 
 

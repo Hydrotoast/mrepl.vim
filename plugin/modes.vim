@@ -97,10 +97,32 @@ function! s:ReplCompleteMode(A, P, L)
   return ReplModeList()
 endfunction
 
+function! s:ReplModeListInput()
+
+  " Get the mode list.
+  let mode_list = ReplModeList()
+
+  " Create the inputlist prompt.
+  let mode_list_prompt = map(copy(mode_list), {k, v -> (k + 1) . '. ' . v})
+
+  " Prompt for a mode.
+  echom "Choose a mode:"
+  let choice = inputlist(mode_list_prompt)
+  let n = len(mode_list)
+  while choice == 0 || choice > n
+    redraw!
+    echo "Invalid mode. Choose a mode:"
+    let choice = inputlist(mode_list_prompt)
+  endwhile
+
+  " Return the mode.
+  return mode_list[choice - 1]
+endfunction
+
 " Switches the REPL mode.
 command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplSwitch
       \ call <SID>ReplSwitch(<q-args>)
 
 " Default mappings.
-nnoremap <silent> <leader>rs :ReplSwitch 
+nnoremap <silent> <leader>rs :call <SID>ReplSwitch(<SID>ReplModeListInput())<CR>
 
