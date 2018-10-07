@@ -55,27 +55,6 @@ if !exists('b:repl_mode')
 end
 
 
-function! ReplModeList()
-
-  " Return the list of REPL modes.
-  return keys(s:repl_modes)
-endfunction
-
-
-function! ReplModeGet(mode)
-
-  " Fail if the REPL mode does not exist.
-  if !has_key(s:repl_modes, a:mode)
-    echoerr 'Failed to get the REPL mode: ' . a:mode . '.'
-          \ . 'The mode has not been registered.'
-    return
-  end
-
-  " Return the REPL mode protocol.
-  return s:repl_modes[a:mode]
-endfunction
-
-
 function! ReplModeGetCurrent()
 
   " Return the REPL mode protocol.
@@ -83,17 +62,24 @@ function! ReplModeGetCurrent()
 endfunction
 
 
+function! s:ListModes()
+
+  " Return the list of REPL modes.
+  return keys(s:repl_modes)
+endfunction
+
+
 function! s:CompleteMode(A, P, L)
 
   " Return the available REPL modes.
-  return ReplModeList()
+  return <SID>ListModes()
 endfunction
 
 
 function! s:PromptMode()
 
   " Get the mode list.
-  let mode_list = ReplModeList()
+  let mode_list = <SID>ListModes()
 
   " Create the inputlist prompt.
   let mode_list_prompt = map(copy(mode_list), {k, v -> (k + 1) . '. ' . v})
@@ -131,7 +117,6 @@ function! s:SwitchMode(mode) abort
   let b:repl_mode = a:mode
 
 endfunction
-
 
 
 " Switches the REPL mode.
