@@ -8,7 +8,7 @@ function! s:EvalLine(...) abort
   end
 
   " Get the current REPL mode.
-  let repl_mode = ReplModeGetCurrent()
+  let repl_mode = ReplCurrentModeGet()
 
   " Get the current line from the source buffer.
   let payload = getline(line('.'))
@@ -31,7 +31,7 @@ function! s:EvalBlock(...) abort range
   end
 
   " Get the current REPL mode.
-  let repl_mode = ReplModeGetCurrent()
+  let repl_mode = ReplCurrentModeGet()
 
   " Get the visually selected lines in the source buffer.
   let lines = getline(a:firstline, a:lastline)
