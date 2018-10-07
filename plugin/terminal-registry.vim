@@ -3,7 +3,7 @@ if !exists('s:registry')
   let s:registry = {}
 end
 
-function! s:TerminalRegistryAdd()
+function! s:Add()
 
   " Get the terminal attributes.
   let term_bufname = expand('<afile>')
@@ -22,7 +22,7 @@ function! s:TerminalRegistryAdd()
   let s:registry[term_bufnr].bufname = term_bufname
 endfunction
 
-function! s:TerminalRegistryRemove()
+function! s:Remove()
 
   " Get the buffer number of the terminal that closed.
   let term_bufname = expand('<afile>')
@@ -63,7 +63,7 @@ endfunction
 augroup terminal_registry_listeners
   autocmd!
 
-  autocmd TermOpen * call <SID>TerminalRegistryAdd()
-  autocmd TermClose * call <SID>TerminalRegistryRemove()
+  autocmd TermOpen * call <SID>Add()
+  autocmd TermClose * call <SID>Remove()
 augroup END
 
