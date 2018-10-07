@@ -30,11 +30,18 @@ function! TerminalRegistryGetChannelId(term_bufnr)
 endfunction
 
 
-function! s:Add()
+function! s:Add(term_bufname)
 
   " Get the terminal attributes.
-  let term_bufname = expand('<afile>')
-  let term_bufnr = bufnr(term_bufname)
+  let term_bufnr = bufnr(a:term_bufname) 
+
+  " Fail if the buffer does not exist.
+  if term_bufnr == -1
+    echoerr "Failed to add terminal to the registry. "
+          \ . "The buffer does not exist."
+    return
+  end
+
   let term_channel_id = &channel
 
   " Fail if the terminal is not open.
@@ -46,15 +53,21 @@ function! s:Add()
   " Add the terminal to the regstry.
   let s:registry[term_bufnr] = {}
   let s:registry[term_bufnr].channel_id = term_channel_id
-  let s:registry[term_bufnr].bufname = term_bufname
+  let s:registry[term_bufnr].bufname = a:term_bufname
 endfunction
 
 
-function! s:Remove()
+function! s:Remove(term_bufname)
 
   " Get the buffer number of the terminal that closed.
-  let term_bufname = expand('<afile>')
-  let term_bufnr = bufnr(term_bufname) 
+  let term_bufnr = bufnr(a:term_bufname) 
+
+  " Fail if the buffer does not exist.
+  if term_bufnr == -1
+    echoerr "Failed to add terminal to the registry. "
+          \ . "The buffer does not exist."
+    return
+  end
 
   " Remove the closed terminal.
   call remove(s:registry, term_bufnr)
@@ -65,7 +78,7 @@ endfunction
 augroup terminal_registry_listeners
   autocmd!
 
-  autocmd TermOpen * call <SID>Add()
-  autocmd TermClose * call <SID>Remove()
+  autocmd TermOpen * call <SID>Add(expand('<afile>'))
+  autocmd TermClose * call <SID>Remove(expand('<afile>'))
 augroup END
 
