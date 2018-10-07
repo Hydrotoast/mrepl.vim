@@ -4,12 +4,6 @@ if !exists('s:registry')
 end
 
 
-" Returns the list of buffer numbers of active terminals in the registry.
-function! TerminalRegistryListNumbers()
-  return keys(s:registry)
-endfunction
-
-
 " Returns the list of buffer names of active terminals in the registry.
 function! TerminalRegistryListNames()
   return map(values(s:registry), {k, v -> v.bufname}) 
