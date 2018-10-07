@@ -14,7 +14,6 @@ function! s:Bind(repl_bufname) abort
 
   " Bind the REPL to the source buffer.
   let b:repl_channel_id = repl_channel_id
-
 endfunction
 
 
@@ -38,7 +37,6 @@ function! s:EvalLine(...) abort
 
   " Send the frame to the REPL.
   call chansend(b:repl_channel_id, frame)
-
 endfunction
 
 
@@ -63,7 +61,6 @@ function! s:EvalBlock(...) abort range
 
   " Send the frame to the REPL.
   call chansend(b:repl_channel_id, frame)
-
 endfunction
 
 
