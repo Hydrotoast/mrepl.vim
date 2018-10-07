@@ -20,14 +20,14 @@ endfunction
 function! s:CompleteTerminalNames(A, P, L)
 
   " Retrieve the terminal names from the registry.
-  return TerminalRegistryListNames()
+  return ActiveTerminalsList()
 endfunction
 
 
 function! s:PromptTerminalName()
 
   " Get the terminal list.
-  let terminal_list = TerminalRegistryListNames()
+  let terminal_list = ActiveTerminalsList()
 
   " Create the inputlist prompt.
   let terminal_list_prompt = map(copy(terminal_list), {k, v -> (k + 1) . '. ' . v})
