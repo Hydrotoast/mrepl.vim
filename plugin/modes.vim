@@ -47,7 +47,7 @@ if !exists('b:repl_mode')
   let b:repl_mode = "term"
 end
 
-function! s:ReplSwitch(mode) abort
+function! s:ReplModeSwitch(mode) abort
   
   if !exists('b:repl_channel_id')
     echoerr 'Failed to send block to the terminal. '
@@ -120,9 +120,16 @@ function! s:ReplModeListInput()
 endfunction
 
 " Switches the REPL mode.
-command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplSwitch
-      \ call <SID>ReplSwitch(<q-args>)
+command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplModeSwitch
+      \ call <SID>ReplModeSwitch(<q-args>)
+
+
+" Script mappings.
+noremap <unique> <silent> <script> <Plug>ReplModeSwitch
+      \ :call <SID>ReplModeSwitch(<SID>ReplModeListInput())<CR>
 
 " Default mappings.
-nnoremap <silent> <leader>rs :call <SID>ReplSwitch(<SID>ReplModeListInput())<CR>
+if !hasmapto('<Plug>ReplModeSwitch')
+  nmap <leader>rs <Plug>ReplModeSwitch
+end
 

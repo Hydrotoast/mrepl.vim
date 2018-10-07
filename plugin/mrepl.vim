@@ -105,8 +105,20 @@ command! ReplEvalLine
 command! -range ReplEvalBlock
       \ <line1>,<line2>call <SID>ReplEvalBlock()
 
+
+" Script mappings.
+noremap <unique> <silent> <script> <Plug>ReplEvalLine :ReplEvalLine<CR>
+noremap <unique> <silent> <script> <Plug>ReplEvalBlock :ReplEvalBlock<CR>
+noremap <unique> <silent> <script> <Plug>ReplBind :call <SID>ReplBind(<SID>ReplTerminalNamesListInput())<CR>
+
 " Default mappings.
-nnoremap <silent> <leader>re :ReplEvalLine<CR>
-vnoremap <silent> <leader>re :ReplEvalBlock<CR>
-nnoremap <silent> <leader>rb :call <SID>ReplBind(<SID>ReplTerminalNamesListInput())<CR> 
+if !hasmapto('<Plug>ReplEvalLine')
+  nmap <leader>re <Plug>ReplEvalLine
+end
+if !hasmapto('<Plug>ReplEvalBlock')
+  vmap <leader>re <Plug>ReplEvalBlock
+end
+if !hasmapto('<Plug>ReplBind')
+  nmap <leader>rb <Plug>ReplBind
+end
 
