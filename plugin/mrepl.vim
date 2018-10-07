@@ -1,4 +1,4 @@
-function! s:ReplBind(repl_bufname) abort
+function! s:Bind(repl_bufname) abort
 
   " Get the buffer number of the REPL.
   let repl_buf_nr = bufnr(a:repl_bufname)
@@ -17,12 +17,13 @@ function! s:ReplBind(repl_bufname) abort
 
 endfunction
 
-function! s:ReplEvalLine(...) abort
+
+function! s:EvalLine(...) abort
 
   if !exists('b:repl_channel_id')
     echoerr 'Failed to evaluate line at the terminal. '
           \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
+          \ . 'Use ReplBind {repl_bufname} to bind the terminal.'
     return
   end
 
@@ -40,12 +41,13 @@ function! s:ReplEvalLine(...) abort
 
 endfunction
 
-function! s:ReplEvalBlock(...) abort range
+
+function! s:EvalBlock(...) abort range
 
   if !exists('b:repl_channel_id')
     echoerr 'Failed to evaluate block at the terminal. '
           \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
+          \ . 'Use ReplBind {repl_bufname} to bind the terminal.'
     return
   end
 
@@ -64,13 +66,15 @@ function! s:ReplEvalBlock(...) abort range
 
 endfunction
 
-function! s:ReplCompleteTerminalNames(A, P, L)
+
+function! s:CompleteTerminalNames(A, P, L)
 
   " Retrieve the terminal names from the registry.
   return TerminalRegistryListNames()
 endfunction
 
-function! s:ReplTerminalNamesListInput()
+
+function! s:PromptTerminalName()
 
   " Get the terminal list.
   let terminal_list = TerminalRegistryListNames()
@@ -94,22 +98,28 @@ endfunction
 
 
 " Binds a REPL to the current buffer by the buffer name of the REPL.
-command! -nargs=1 -complete=customlist,<SID>ReplCompleteTerminalNames ReplBind
-      \ call <SID>ReplBind(<q-args>)
+command! -nargs=1 -complete=customlist,<SID>CompleteTerminalNames
+      \ ReplBind
+      \ call <SID>Bind(<q-args>)
 
-" Evaluate a line at the bound REPL.
-command! ReplEvalLine
-      \ call <SID>ReplEvalLine()
+" Evaluates a line at the bound REPL.
+command!
+      \ ReplEvalLine
+      \ call <SID>EvalLine()
 
-" Evaluate a block at the bound REPL.
-command! -range ReplEvalBlock
-      \ <line1>,<line2>call <SID>ReplEvalBlock()
+" Evaluates a block at the bound REPL.
+command! -range
+      \ ReplEvalBlock
+      \ <line1>,<line2>call <SID>EvalBlock()
 
 
 " Script mappings.
-noremap <unique> <silent> <script> <Plug>ReplEvalLine :ReplEvalLine<CR>
-noremap <unique> <silent> <script> <Plug>ReplEvalBlock :ReplEvalBlock<CR>
-noremap <unique> <silent> <script> <Plug>ReplBind :call <SID>ReplBind(<SID>ReplTerminalNamesListInput())<CR>
+noremap <unique> <silent> <script> <Plug>ReplEvalLine
+      \ :ReplEvalLine<CR>
+noremap <unique> <silent> <script> <Plug>ReplEvalBlock
+      \ :ReplEvalBlock<CR>
+noremap <unique> <silent> <script> <Plug>ReplBind
+      \ :call <SID>Bind(<SID>PromptTerminalName())<CR>
 
 " Default mappings.
 if !hasmapto('<Plug>ReplEvalLine')
