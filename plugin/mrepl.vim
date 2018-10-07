@@ -17,10 +17,10 @@ function! s:ReplBind(repl_bufname) abort
 
 endfunction
 
-function! s:ReplSendLine(...) abort
+function! s:ReplEvalLine(...) abort
 
   if !exists('b:repl_channel_id')
-    echoerr 'Failed to send line to the terminal. '
+    echoerr 'Failed to evaluate line at the terminal. '
           \ . 'The terminal is not bound. '
           \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
     return
@@ -40,10 +40,10 @@ function! s:ReplSendLine(...) abort
 
 endfunction
 
-function! s:ReplSendBlock(...) abort range
+function! s:ReplEvalBlock(...) abort range
 
   if !exists('b:repl_channel_id')
-    echoerr 'Failed to send block to the terminal. '
+    echoerr 'Failed to evaluate block at the terminal. '
           \ . 'The terminal is not bound. '
           \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
     return
@@ -97,16 +97,16 @@ endfunction
 command! -nargs=1 -complete=customlist,<SID>ReplCompleteTerminalNames ReplBind
       \ call <SID>ReplBind(<q-args>)
 
-" Sends a line to the bound REPL.
-command! ReplSendLine
-      \ call <SID>ReplSendLine()
+" Evaluate a line at the bound REPL.
+command! ReplEvalLine
+      \ call <SID>ReplEvalLine()
 
-" Sends a block to the bound REPL.
-command! -range ReplSendBlock
-      \ <line1>,<line2>call <SID>ReplSendBlock()
+" Evaluate a block at the bound REPL.
+command! -range ReplEvalBlock
+      \ <line1>,<line2>call <SID>ReplEvalBlock()
 
 " Default mappings.
-nnoremap <silent> <leader>re :ReplSendLine<CR>
-vnoremap <silent> <leader>re :ReplSendBlock<CR>
+nnoremap <silent> <leader>re :ReplEvalLine<CR>
+vnoremap <silent> <leader>re :ReplEvalBlock<CR>
 nnoremap <silent> <leader>rb :call <SID>ReplBind(<SID>ReplTerminalNamesListInput())<CR> 
 
