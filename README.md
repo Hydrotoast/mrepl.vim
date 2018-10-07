@@ -48,3 +48,13 @@ let mapleader=","
 Note that the `<leader>` variable refers to the key bound to the `mapleader`
 option in key mappings.
 
+#### Mappings
+
+To map keys to the behaviors, the following mappings are available.
+
+| Mapping                 | Default        |
+| ----------------------- | -------------- |
+| `<Plug>ReplBind`        | `<leader>,rb`  |
+| `<Plug>ReplModeSwitch`  | `<leader>,rs`  |
+| `<Plug>ReplEvalLine`    | `<leader>,re`  |
+| `<Plug>ReplEvalBlock`   | `<leader>,re`  |
