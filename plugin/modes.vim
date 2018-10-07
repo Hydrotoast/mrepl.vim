@@ -1,11 +1,11 @@
 " We keep a registry of REPL modes with state that is encapsulated by the
 " script.
-
 if !exists('s:repl_modes')
   let s:repl_modes = {}
 end
 
-function! s:ReplModeInit(mode)
+
+function! s:InitMode(mode)
 
   let s:repl_modes[a:mode] = {}
   let s:repl_modes[a:mode].line = {}
@@ -14,39 +14,40 @@ function! s:ReplModeInit(mode)
   let s:repl_modes[a:mode].line.footer = "\n"
   let s:repl_modes[a:mode].block.header = ''
   let s:repl_modes[a:mode].block.footer = "\n"
-
 endfunction
 
-function! s:ReplModeSetLine(mode, header, footer)
+
+function! s:SetModeLine(mode, header, footer)
 
   let s:repl_modes[a:mode].line.header = a:header
   let s:repl_modes[a:mode].line.footer = a:footer
-
 endfunction
 
-function! s:ReplModeSetBlock(mode, header, footer)
+
+function! s:SetModeBlock(mode, header, footer)
 
   let s:repl_modes[a:mode].block.header = a:header
   let s:repl_modes[a:mode].block.footer = a:footer
-
 endfunction
+
 
 " Initialize the terminal REPL mode.
 if !has_key(s:repl_modes, 'term')
-  call <SID>ReplModeInit('term')
+  call <SID>InitMode('term')
 end
 
 " Initialize the Scala REPL mode.
 if !has_key(s:repl_modes, 'scala')
-  call <SID>ReplModeInit('scala')
-  call <SID>ReplModeSetBlock('scala', ":paste\n", nr2char(4))
+  call <SID>InitMode('scala')
+  call <SID>SetModeBlock('scala', ":paste\n", nr2char(4))
 end
 
 " Initialize the Julia REPL mode.
 if !has_key(s:repl_modes, 'julia')
-  call <SID>ReplModeInit('julia')
-  call <SID>ReplModeSetBlock('julia', '', '')
+  call <SID>InitMode('julia')
+  call <SID>SetModeBlock('julia', '', '')
 end
+
 
 " The current REPL mode.
 if !exists('b:repl_mode')
