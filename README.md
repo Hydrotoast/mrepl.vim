@@ -54,7 +54,7 @@ To map keys to the behaviors, the following mappings are available.
 
 | Mapping                 | Default        |
 | ----------------------- | -------------- |
-| `<Plug>ReplBind`        | `<leader>,rb`  |
-| `<Plug>ReplModeSwitch`  | `<leader>,rs`  |
-| `<Plug>ReplEvalLine`    | `<leader>,re`  |
-| `<Plug>ReplEvalBlock`   | `<leader>,re`  |
+| `<Plug>ReplBind`        | `<leader>rb`  |
+| `<Plug>ReplModeSwitch`  | `<leader>rs`  |
+| `<Plug>ReplEvalLine`    | `<leader>re`  |
+| `<Plug>ReplEvalBlock`   | `<leader>re`  |
