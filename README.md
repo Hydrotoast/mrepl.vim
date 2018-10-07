@@ -1,12 +1,12 @@
-## vim-mrepl
+## mrepl.vim
 
-Adds modal REPL protocol to Neovim. A REPL protocol defines a format for how
+Adds a modal REPL protocol to Neovim. A REPL protocol defines a format for how
 line and block commands are issued to a REPL. A modal protocol changes its
 behavior based on the mode.
 
 ### Usage
 
-To begin using `vim-mrepl`, we need to bind the buffer to an existing terminal.
+To begin using `mrepl.vim`, we need to bind the buffer to an existing terminal.
 
 ```
 :ReplBind {repl_bufname}
