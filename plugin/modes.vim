@@ -54,30 +54,13 @@ if !exists('b:repl_mode')
   let b:repl_mode = "term"
 end
 
-function! s:ReplModeSwitch(mode) abort
-  
-  if !exists('b:repl_channel_id')
-    echoerr 'Failed to send block to the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
-    return
-  end
-
-  if !has_key(s:repl_modes, a:mode)
-    echoerr 'Failed to switch the REPL to ' . a:mode . '.'
-          \ . 'The mode has not been registered.'
-    return
-  end
-
-  let b:repl_mode = a:mode
-
-endfunction
 
 function! ReplModeList()
 
   " Return the list of REPL modes.
   return keys(s:repl_modes)
 endfunction
+
 
 function! ReplModeGet(mode)
 
@@ -92,19 +75,22 @@ function! ReplModeGet(mode)
   return s:repl_modes[a:mode]
 endfunction
 
+
 function! ReplModeGetCurrent()
 
   " Return the REPL mode protocol.
   return s:repl_modes[b:repl_mode]
 endfunction
 
-function! s:ReplCompleteMode(A, P, L)
+
+function! s:CompleteMode(A, P, L)
 
   " Return the available REPL modes.
   return ReplModeList()
 endfunction
 
-function! s:ReplModeListInput()
+
+function! s:PromptMode()
 
   " Get the mode list.
   let mode_list = ReplModeList()
@@ -126,14 +112,38 @@ function! s:ReplModeListInput()
   return mode_list[choice - 1]
 endfunction
 
+
+function! s:SwitchMode(mode) abort
+  
+  if !exists('b:repl_channel_id')
+    echoerr 'Failed to send block to the terminal. '
+          \ . 'The terminal is not bound. '
+          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
+    return
+  end
+
+  if !has_key(s:repl_modes, a:mode)
+    echoerr 'Failed to switch the REPL to ' . a:mode . '.'
+          \ . 'The mode has not been registered.'
+    return
+  end
+
+  let b:repl_mode = a:mode
+
+endfunction
+
+
+
 " Switches the REPL mode.
-command! -nargs=1 -complete=customlist,<SID>ReplCompleteMode ReplModeSwitch
-      \ call <SID>ReplModeSwitch(<q-args>)
+command! -nargs=1 -complete=customlist,<SID>CompleteMode
+      \ ReplModeSwitch
+      \ call <SID>SwitchMode(<q-args>)
 
 
 " Script mappings.
-noremap <unique> <silent> <script> <Plug>ReplModeSwitch
-      \ :call <SID>ReplModeSwitch(<SID>ReplModeListInput())<CR>
+noremap <unique> <silent> <script>
+      \ <Plug>ReplModeSwitch
+      \ :call <SID>SwitchMode(<SID>PromptMode())<CR>
 
 " Default mappings.
 if !hasmapto('<Plug>ReplModeSwitch')
