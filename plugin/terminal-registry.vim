@@ -6,8 +6,8 @@ end
 function! s:TerminalRegistryAdd()
 
   " Get the terminal attributes.
-  let term_bufnr = bufnr('%')
-  let term_bufname = bufname('%')
+  let term_bufname = expand('<afile>')
+  let term_bufnr = bufnr(term_bufname)
   let term_channel_id = &channel
 
   " Fail if the terminal is not open.
@@ -25,7 +25,8 @@ endfunction
 function! s:TerminalRegistryRemove()
 
   " Get the buffer number of the terminal that closed.
-  let term_bufnr = bufnr('%') 
+  let term_bufname = expand('<afile>')
+  let term_bufnr = bufnr(term_bufname) 
 
   " Remove the closed terminal.
   call remove(s:registry, term_bufnr)
