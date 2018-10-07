@@ -32,15 +32,21 @@ function! s:ReplModeSetBlock(mode, header, footer)
 endfunction
 
 " Initialize the terminal REPL mode.
-call <SID>ReplModeInit('term')
+if !has_key(s:repl_modes, 'term')
+  call <SID>ReplModeInit('term')
+end
 
 " Initialize the Scala REPL mode.
-call <SID>ReplModeInit('scala')
-call <SID>ReplModeSetBlock('scala', ":paste\n", nr2char(4))
+if !has_key(s:repl_modes, 'scala')
+  call <SID>ReplModeInit('scala')
+  call <SID>ReplModeSetBlock('scala', ":paste\n", nr2char(4))
+end
 
 " Initialize the Julia REPL mode.
-call <SID>ReplModeInit('julia')
-call <SID>ReplModeSetBlock('julia', '', '')
+if !has_key(s:repl_modes, 'julia')
+  call <SID>ReplModeInit('julia')
+  call <SID>ReplModeSetBlock('julia', '', '')
+end
 
 " The current REPL mode.
 if !exists('b:repl_mode')
