@@ -4,9 +4,7 @@ function! s:ReplBind(repl_bufname) abort
   let repl_buf_nr = bufnr(a:repl_bufname)
 
   " Get the channel of the REPL.
-  execute 'b' . repl_buf_nr
-  let repl_channel_id = &channel
-  execute 'b#'
+  let repl_channel_id = getbufvar(repl_buf_nr, '&channel')
 
   if repl_channel_id == 0
     echoerr 'Failed to bind to a terminal. '
