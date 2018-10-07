@@ -3,6 +3,33 @@ if !exists('s:registry')
   let s:registry = {}
 end
 
+
+" Returns the list of buffer numbers of active terminals in the registry.
+function! TerminalRegistryListNumbers()
+  return keys(s:registry)
+endfunction
+
+
+" Returns the list of buffer names of active terminals in the registry.
+function! TerminalRegistryListNames()
+  return map(values(s:registry), {k, v -> v.bufname}) 
+endfunction
+
+
+" Gets the channel id of an active terminal by its buffer number.
+function! TerminalRegistryGetChannelId(term_bufnr)
+
+  " Fail if the terminal buffer number is not in the registry.
+  if !has_key(s:registry, a:term_bufnr)
+    echoerr "Failed to get the channel id from the registry. "
+          \ . "Invalid term_bufnr=" . a:term_bufnr
+    return
+  end
+
+  s:registry[a:term_bufnr]
+endfunction
+
+
 function! s:Add()
 
   " Get the terminal attributes.
@@ -22,6 +49,7 @@ function! s:Add()
   let s:registry[term_bufnr].bufname = term_bufname
 endfunction
 
+
 function! s:Remove()
 
   " Get the buffer number of the terminal that closed.
@@ -30,32 +58,6 @@ function! s:Remove()
 
   " Remove the closed terminal.
   call remove(s:registry, term_bufnr)
-endfunction
-
-function! TerminalRegistryListNumbers()
-
-  " Return the list of buffer numbers of terminals in the registry.
-  return keys(s:registry)
-endfunction
-
-function! TerminalRegistryListNames()
-
-  " Return the list of buffer names of terminals in the registry.
-  return map(values(s:registry), {k, v -> v.bufname}) 
-endfunction
-
-
-function! TerminalRegistryGetChannelId(term_bufnr)
-
-  " Fail if the terminal buffer number is not in the registry.
-  if !has_key(s:registry, a:term_bufnr)
-    echoerr "Failed to get the channel id from the registry. "
-          \ . "Invalid term_bufnr=" . a:term_bufnr
-    return
-  end
-
-  " Get the channel id of the given terminal buffer number.
-  s:registry[a:term_bufnr]
 endfunction
 
 
