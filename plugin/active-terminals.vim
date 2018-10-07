@@ -6,7 +6,7 @@ end
 
 " Returns the list of buffer names of active terminals.
 function! ActiveTerminalsList()
-  return map(values(s:terminals), {k, v -> v.bufname}) 
+  return values(s:terminals) 
 endfunction
 
 
@@ -22,18 +22,8 @@ function! s:Add(term_bufname)
     return
   end
 
-  let term_channel_id = &channel
-
-  " Fail if the terminal is not open.
-  if !term_channel_id
-    echoerr "Failed to add terminal to the list. There is no channel."
-    return
-  end
-
   " Add the terminal to the regstry.
-  let s:terminals[term_bufnr] = {}
-  let s:terminals[term_bufnr].channel_id = term_channel_id
-  let s:terminals[term_bufnr].bufname = a:term_bufname
+  let s:terminals[term_bufnr] = a:term_bufname
 endfunction
 
 
