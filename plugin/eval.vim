@@ -1,27 +1,4 @@
-function! s:EvalLine(...) abort
-
-  if !exists('b:repl_channel_id')
-    echoerr 'Failed to evaluate line at the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind {repl_bufname} to bind the terminal.'
-    return
-  end
-
-  " Get the current REPL mode.
-  let repl_mode = ReplCurrentModeGet()
-
-  " Get the current line from the source buffer.
-  let payload = getline(line('.'))
-
-  " Prepare the frame.
-  let frame = repl_mode.line.header . payload . repl_mode.line.footer
-
-  " Send the frame to the REPL.
-  call chansend(b:repl_channel_id, frame)
-endfunction
-
-
-function! s:EvalBlock(...) abort range
+function! s:EvalSelection(selection) abort
 
   if !exists('b:repl_channel_id')
     echoerr 'Failed to evaluate block at the terminal. '
@@ -30,34 +7,66 @@ function! s:EvalBlock(...) abort range
     return
   end
 
+  " Choose the format type based on whether the selection has a newline.
+  let has_newline = stridx(a:selection, "\n") != -1
+  let format_type = has_newline ? 'block' : 'line'
+
   " Get the current REPL mode.
   let repl_mode = ReplCurrentModeGet()
 
-  " Get the visually selected lines in the source buffer.
-  let lines = getline(a:firstline, a:lastline)
-  let payload = join(lines, "\n") . "\n"
-
   " Prepare the frame.
-  let frame = repl_mode.block.header . payload . repl_mode.block.footer
+  let format = repl_mode[format_type]
+  let frame = format.header . a:selection . format.footer
 
   " Send the frame to the REPL.
   call chansend(b:repl_channel_id, frame)
 endfunction
 
 
+function! s:Operate(type)
+
+  " Save the contents of the register.
+  let saved_reg = @@
+  let saved_selection = &selection
+  let &selection = "inclusive"
+
+  " Ignore blockwise selection types.
+  if a:type ==# "<C-v>" || a:type ==# 'block'
+    return
+  end
+
+  " Choose the marks based on the mode.
+  let is_visual = a:type ==# 'v' || a:type ==# 'V'
+  let [m1, m2] = is_visual ? ['`<', '`>'] : ['`[', '`]']
+
+  " Infer the selection type.
+  let is_line = a:type ==# 'V' || a:type ==# 'line'
+  let selection_type = is_line ? 'V' : 'v'
+
+  " Select the text.
+  execute 'normal! ' . m1 . selection_type . m2 . 'y'
+  let selection = @@
+
+  " Evaluates the selection.
+  call <SID>EvalSelection(selection)
+
+  " Restore the contents of the register.
+  let @@ = saved_reg
+  let &selection = saved_selection
+endfunction
+
+
 " Script mappings.
-noremap <unique> <silent> <script>
-      \ <Plug>ReplEvalLine
-      \ :call <SID>EvalLine()<CR>
-noremap <unique> <silent> <script>
-      \ <Plug>ReplEvalBlock
-      \ :call <SID>EvalBlock()<CR>
+nnoremap <silent> <script>
+      \ <Plug>ReplEval
+      \ :set operatorfunc=<SID>Operate<CR>g@
+vnoremap <silent> <script>
+      \ <Plug>ReplEval
+      \ :<C-u>call <SID>Operate(visualmode())<CR>
 
 " Default mappings.
-if !hasmapto('<Plug>ReplEvalLine')
-  nmap <leader>re <Plug>ReplEvalLine
-end
-if !hasmapto('<Plug>ReplEvalBlock')
-  vmap <leader>re <Plug>ReplEvalBlock
+if !hasmapto('<Plug>ReplEval')
+  nmap <leader>re <Plug>ReplEval
+  vmap <leader>re <Plug>ReplEval
 end
 

@@ -1,8 +1,8 @@
 ## mrepl.vim
 
-Adds a modal REPL protocol to Neovim. A REPL protocol defines a format for how
-line and block commands are issued to a REPL. A modal protocol changes its
-behavior based on the mode.
+Adds a modal REPL protocol to Neovim. A REPL protocol defines a line format and
+a block format for commands send to a REPL. Switching the mode will switch the
+line and block formats.
 
 ### Usage
 
@@ -14,10 +14,10 @@ To begin using `mrepl.vim`, we need to bind the buffer to an existing terminal.
 
 Note that `{repl_bufname}` may be tab-completed.
 
-To evaluate lines in the bound REPL, we use the default bindings.
+To evaluate lines in the bound REPL, we use the default operator mappings.
 
-- `<leader>re`. Evaluates the line under the cursor in the REPL.
-- `<leader>re`. Evaluates the selected lines in the REPL.
+- `<leader>re{motion}`. Evaluates the text moved over in the REPL.
+- `<leader>re`. Evaluates the visual selection in the REPL.
 
 See the **Configuration** section to configure the `<leader>` key.
 
@@ -56,5 +56,4 @@ To map keys to the behaviors, the following mappings are available.
 | ----------------------- | -------------- |
 | `<Plug>ReplBind`        | `<leader>rb`  |
 | `<Plug>ReplModeSwitch`  | `<leader>rs`  |
-| `<Plug>ReplEvalLine`    | `<leader>re`  |
-| `<Plug>ReplEvalBlock`   | `<leader>re`  |
+| `<Plug>ReplEval`        | `<leader>re`  |
