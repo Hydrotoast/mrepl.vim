@@ -23,7 +23,7 @@ function! s:EvalSelection(selection) abort
 endfunction
 
 
-function! s:Operate(type)
+function! s:GetSelection(type)
 
   " Save the contents of the register.
   let saved_reg = @@
@@ -32,7 +32,7 @@ function! s:Operate(type)
 
   " Ignore blockwise selection types.
   if a:type ==# "<C-v>" || a:type ==# 'block'
-    return
+    return ''
   end
 
   " Choose the marks based on the mode.
@@ -47,12 +47,27 @@ function! s:Operate(type)
   execute 'normal! ' . m1 . selection_type . m2 . 'y'
   let selection = @@
 
-  " Evaluates the selection.
-  call <SID>EvalSelection(selection)
-
   " Restore the contents of the register.
   let @@ = saved_reg
   let &selection = saved_selection
+
+  " Return the selection
+  return selection
+endfunction
+
+
+function! s:Operate(type)
+
+  " Retrieve the selection for the operator.
+  let selection = <SID>GetSelection(a:type)
+  
+  " Return early if there is no selection.
+  if empty(selection)
+    return
+  end
+
+  " Evaluate the selection.
+  call <SID>EvalSelection(selection)
 endfunction
 
 
