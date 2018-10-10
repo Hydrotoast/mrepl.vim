@@ -67,7 +67,7 @@ command! -nargs=1 -complete=customlist,<SID>CompleteMode
 
 
 " Script mappings.
-noremap <unique> <silent> <script>
+noremap <silent> <script>
       \ <Plug>ReplModeSwitch
       \ :call <SID>SwitchMode(<SID>PromptMode())<CR>
 

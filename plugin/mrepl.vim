@@ -53,7 +53,7 @@ command! -nargs=1 -complete=customlist,<SID>CompleteTerminalNames
       \ call <SID>Bind(<q-args>)
 
 " Script mappings.
-noremap <unique> <silent> <script> <Plug>ReplBind
+noremap <silent> <script> <Plug>ReplBind
       \ :call <SID>Bind(<SID>PromptTerminalName())<CR>
 
 " Default mappings.
