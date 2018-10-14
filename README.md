@@ -4,6 +4,21 @@ Adds a modal REPL protocol to Neovim. A REPL protocol defines a line format and
 a block format for commands send to a REPL. Switching the mode will switch the
 line and block formats.
 
+### Installation
+
+Depending on your plugin manager, the installation procedure may vary. We list
+some common plugin manager configurations below.
+
+For `vim-plug`, add the following configuration.
+```
+Plug 'Hydrotoast/mrepl.vim'
+```
+
+For `Vundle`, add the following configuration.
+```
+Plugin 'Hydrotoast/mrepl.vim'
+```
+
 ### Usage
 
 To begin using `mrepl.vim`, we bind the current buffer to an existing termianl
