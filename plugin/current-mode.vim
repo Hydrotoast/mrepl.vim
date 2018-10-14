@@ -1,11 +1,8 @@
-" The current REPL mode.
-if !exists('b:repl_mode')
-  let b:repl_mode = "term"
-end
-
-
 " Return the REPL mode protocol.
 function! ReplCurrentModeGet()
+  if !exists('b:repl_mode')
+    let b:repl_mode = "term"
+  end
   return mrepl#modes#Get(b:repl_mode)
 endfunction
 
