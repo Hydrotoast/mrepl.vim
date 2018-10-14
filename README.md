@@ -24,7 +24,7 @@ See the **Configuration** section to configure the `<leader>` key.
 To switch the REPL mode, we use the command
 
 ```
-:ReplModeSwitch {mode}
+:ReplSwitchMode {mode}
 ```
 
 where the `{mode}` is the REPL mode to switch to.
@@ -33,7 +33,7 @@ For example, we can switch to the `scala` mode to evaluate source code in a
 Scala REPL or spark-shell.
 
 ```
-:ReplModeSwitch scala
+:ReplSwitchMode scala
 ```
 
 ### Configuration
@@ -55,5 +55,5 @@ To map keys to the behaviors, the following mappings are available.
 | Mapping                 | Default        |
 | ----------------------- | -------------- |
 | `<Plug>ReplBind`        | `<leader>rb`  |
-| `<Plug>ReplModeSwitch`  | `<leader>rs`  |
+| `<Plug>ReplSwitchMode`  | `<leader>rs`  |
 | `<Plug>ReplEval`        | `<leader>re`  |

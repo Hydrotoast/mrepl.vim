@@ -30,17 +30,17 @@ endfunction
 
 " Switches the REPL mode.
 command! -nargs=1 -complete=customlist,<SID>CompleteMode
-      \ ReplModeSwitch
+      \ ReplSwitchMode
       \ call mrepl#buffer#SwitchMode(<q-args>)
 
 
 " Script mappings.
 noremap <silent> <script>
-      \ <Plug>ReplModeSwitch
+      \ <Plug>ReplSwitchMode
       \ :call mrepl#buffer#SwitchMode(<SID>PromptMode())<CR>
 
 " Default mappings.
-if !hasmapto('<Plug>ReplModeSwitch')
-  nmap <leader>rs <Plug>ReplModeSwitch
+if !hasmapto('<Plug>ReplSwitchMode')
+  nmap <leader>rs <Plug>ReplSwitchMode
 end
 
