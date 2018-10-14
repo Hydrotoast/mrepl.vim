@@ -1,21 +1,3 @@
-function! s:Bind(repl_bufname) abort
-
-  " Get the buffer number of the REPL.
-  let repl_buf_nr = bufnr(a:repl_bufname)
-
-  " Get the channel of the REPL.
-  let repl_channel_id = getbufvar(repl_buf_nr, '&channel')
-
-  if repl_channel_id == 0
-    echoerr 'Failed to bind to a terminal. '
-          \ . 'The selected buffer is not a terminal.'
-    return
-  end
-
-  " Bind the REPL to the source buffer.
-  let b:repl_channel_id = repl_channel_id
-endfunction
-
 
 function! s:CompleteTerminalNames(A, P, L)
 
@@ -69,11 +51,11 @@ endfunction
 " Binds a REPL to the current buffer by the buffer name of the REPL.
 command! -nargs=1 -complete=customlist,<SID>CompleteTerminalNames
       \ ReplBind
-      \ call <SID>Bind(<q-args>)
+      \ call mrepl#buffer#Bind(<q-args>)
 
 " Script mappings.
 noremap <silent> <script> <Plug>ReplBind
-      \ :call <SID>Bind(<SID>ChooseTerminal())<CR>
+      \ :call mrepl#buffer#Bind(<SID>ChooseTerminal())<CR>
 
 " Default mappings.
 if !hasmapto('<Plug>ReplBind')

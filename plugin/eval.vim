@@ -41,11 +41,8 @@ function! s:Operate(type)
     return
   end
 
-  " Get the current REPL mode.
-  let repl_mode = ReplCurrentModeGet()
-
   " Evaluate the selection.
-  call mrepl#eval#Selection(selection, repl_mode)
+  call mrepl#buffer#EvalSelection(selection)
 endfunction
 
 

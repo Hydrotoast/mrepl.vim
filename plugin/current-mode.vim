@@ -1,12 +1,3 @@
-" Return the REPL mode protocol.
-function! ReplCurrentModeGet()
-  if !exists('b:repl_mode')
-    let b:repl_mode = "term"
-  end
-  return mrepl#modes#Get(b:repl_mode)
-endfunction
-
-
 function! s:CompleteMode(A, P, L)
 
   " Return the available REPL modes.
@@ -37,36 +28,16 @@ function! s:PromptMode()
 endfunction
 
 
-function! s:SwitchMode(mode) abort
-  
-  if !exists('b:repl_channel_id')
-    echoerr 'Failed to send block to the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
-    return
-  end
-
-  if !mrepl#modes#Exists(a:mode)
-    echoerr 'Failed to switch the REPL to ' . a:mode . '.'
-          \ . 'The mode has not been registered.'
-    return
-  end
-
-  let b:repl_mode = a:mode
-
-endfunction
-
-
 " Switches the REPL mode.
 command! -nargs=1 -complete=customlist,<SID>CompleteMode
       \ ReplModeSwitch
-      \ call <SID>SwitchMode(<q-args>)
+      \ call mrepl#buffer#SwitchMode(<q-args>)
 
 
 " Script mappings.
 noremap <silent> <script>
       \ <Plug>ReplModeSwitch
-      \ :call <SID>SwitchMode(<SID>PromptMode())<CR>
+      \ :call mrepl#buffer#SwitchMode(<SID>PromptMode())<CR>
 
 " Default mappings.
 if !hasmapto('<Plug>ReplModeSwitch')
