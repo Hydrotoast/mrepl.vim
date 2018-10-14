@@ -6,54 +6,23 @@ line and block formats.
 
 ### Usage
 
-To begin using `mrepl.vim`, we need to bind the buffer to an existing terminal.
+To begin using `mrepl.vim`, we bind the current buffer to an existing termianl
+and switch to the appropriate REPL mode.
 
-```
-:ReplBind {repl_bufname}
-```
+- `<leader>rb`. Binds the current buffer to an existing terminal.
+- `<leader>rs`. Switches the REPL mode.
 
-Note that `{repl_bufname}` may be tab-completed.
+To evaluate selections in the bound REPL, we use the default operator mappings.
 
-To evaluate lines in the bound REPL, we use the default operator mappings.
-
-- `<leader>re{motion}`. Evaluates the text moved over in the REPL.
+- `<leader>re{motion}`. Evaluates the selection in the REPL.
 - `<leader>re`. Evaluates the visual selection in the REPL.
 
-See the **Configuration** section to configure the `<leader>` key.
-
-To switch the REPL mode, we use the command
-
-```
-:ReplSwitchMode {mode}
-```
-
-where the `{mode}` is the REPL mode to switch to.
-
-For example, we can switch to the `scala` mode to evaluate source code in a
-Scala REPL or spark-shell.
-
-```
-:ReplSwitchMode scala
-```
-
-### Configuration
-
-To use this plugin, the `mapleader` option must be set in your `~/.vimrc` (or 
-`~/.config/nvim/init.vim)`. For example, we can bind it to `,`.
-
-```
-let mapleader=","
-```
-
-Note that the `<leader>` variable refers to the key bound to the `mapleader`
-option in key mappings.
-
-#### Mappings
+### Mappings
 
 To map keys to the behaviors, the following mappings are available.
 
-| Mapping                 | Default        |
-| ----------------------- | -------------- |
-| `<Plug>ReplBind`        | `<leader>rb`  |
-| `<Plug>ReplSwitchMode`  | `<leader>rs`  |
-| `<Plug>ReplEval`        | `<leader>re`  |
+| Mapping                 | Default       | Description                     |
+| ----------------------- | ------------- | ------------------------------- |
+| `<Plug>ReplBind`        | `<leader>rb`  | Binds the buffer to a terminal. |
+| `<Plug>ReplSwitchMode`  | `<leader>rs`  | Switches the REPL mode.         |
+| `<Plug>ReplEval`        | `<leader>re`  | Evaluates selections.           |
