@@ -6,21 +6,21 @@ end
 
 " Return the REPL mode protocol.
 function! ReplCurrentModeGet()
-  return ReplModesGet(b:repl_mode)
+  return mrepl#modes#Get(b:repl_mode)
 endfunction
 
 
 function! s:CompleteMode(A, P, L)
 
   " Return the available REPL modes.
-  return ReplModesList()
+  return mrepl#modes#List()
 endfunction
 
 
 function! s:PromptMode()
 
   " Get the mode list.
-  let mode_list = ReplModesList()
+  let mode_list = mrepl#modes#List()
 
   " Create the inputlist prompt.
   let mode_list_prompt = map(copy(mode_list), {k, v -> (k + 1) . '. ' . v})
@@ -49,7 +49,7 @@ function! s:SwitchMode(mode) abort
     return
   end
 
-  if !ReplModesExists(a:mode)
+  if !mrepl#modes#Exists(a:mode)
     echoerr 'Failed to switch the REPL to ' . a:mode . '.'
           \ . 'The mode has not been registered.'
     return

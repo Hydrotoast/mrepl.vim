@@ -5,19 +5,19 @@ end
 
 
 " Returns the list of REPL mode names.
-function! ReplModesList()
-  return keys(s:repl_modes)
+function! mrepl#modes#List()
+  return copy(keys(s:repl_modes))
 endfunction
 
 
 " Returns the REPL mode by name.
-function! ReplModesGet(mode)
+function! mrepl#modes#Get(mode)
   return copy(s:repl_modes[a:mode])
 endfunction
 
 
 " Checks if the REPL mode exists by name.
-function! ReplModesExists(mode)
+function! mrepl#modes#Exists(mode)
   return has_key(s:repl_modes, a:mode)
 endfunction
 
