@@ -1,28 +1,3 @@
-function! s:EvalSelection(selection) abort
-
-  if !exists('b:repl_channel_id')
-    echoerr 'Failed to evaluate block at the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind {repl_bufname} to bind the terminal.'
-    return
-  end
-
-  " Choose the format type based on whether the selection has a newline.
-  let has_newline = stridx(a:selection, "\n") != -1
-  let format_type = has_newline ? 'block' : 'line'
-
-  " Get the current REPL mode.
-  let repl_mode = ReplCurrentModeGet()
-
-  " Prepare the frame.
-  let format = repl_mode[format_type]
-  let frame = format.header . a:selection . format.footer
-
-  " Send the frame to the REPL.
-  call chansend(b:repl_channel_id, frame)
-endfunction
-
-
 function! s:GetSelection(type)
 
   " Save the contents of the register.
@@ -66,8 +41,11 @@ function! s:Operate(type)
     return
   end
 
+  " Get the current REPL mode.
+  let repl_mode = ReplCurrentModeGet()
+
   " Evaluate the selection.
-  call <SID>EvalSelection(selection)
+  call mrepl#eval#Selection(selection, repl_mode)
 endfunction
 
 
