@@ -24,18 +24,15 @@ function! s:CompleteTerminalNames(A, P, L)
 endfunction
 
 
-function! s:PromptTerminalName()
-
-  " Get the terminal list.
-  let terminal_list = ActiveTerminalsList()
+function! s:PromptTerminalName(terminal_list)
 
   " Create the inputlist prompt.
-  let terminal_list_prompt = map(copy(terminal_list), {k, v -> (k + 1) . '. ' . v})
+  let terminal_list_prompt = map(a:terminal_list, {k, v -> (k + 1) . '. ' . v})
 
   " Prompt for a terminal.
   echom "Choose a terminal:"
   let choice = inputlist(terminal_list_prompt)
-  let n = len(terminal_list)
+  let n = len(a:terminal_list)
   while choice == 0 || choice > n
     redraw!
     echo "Invalid terminal. Choose a terminal:"
@@ -43,7 +40,29 @@ function! s:PromptTerminalName()
   endwhile
 
   " Return the terminal.
-  return terminal_list[choice - 1]
+  return a:terminal_list[choice - 1]
+endfunction
+
+
+function! s:ChooseTerminal()
+
+  let terminal_list = ActiveTerminalsList()
+
+  " Nothing to do if there are no terminals.
+  if empty(terminal_list)
+    echo 'No active terminals to bind to'
+    return
+  end
+
+  " Choose the trivial terminal if it exists.
+  if len(terminal_list) == 1
+    let choice = terminal_list[0]
+  else
+    let choice = <SID>PromptTerminalName(terminal_list)
+  end
+
+  echo 'Bound to terminal: ' . choice
+  return choice
 endfunction
 
 
@@ -54,7 +73,7 @@ command! -nargs=1 -complete=customlist,<SID>CompleteTerminalNames
 
 " Script mappings.
 noremap <silent> <script> <Plug>ReplBind
-      \ :call <SID>Bind(<SID>PromptTerminalName())<CR>
+      \ :call <SID>Bind(<SID>ChooseTerminal())<CR>
 
 " Default mappings.
 if !hasmapto('<Plug>ReplBind')

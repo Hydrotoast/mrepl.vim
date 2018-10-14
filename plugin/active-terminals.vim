@@ -6,7 +6,7 @@ end
 
 " Returns the list of buffer names of active terminals.
 function! ActiveTerminalsList()
-  return values(s:terminals) 
+  return copy(values(s:terminals))
 endfunction
 
 
