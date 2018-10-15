@@ -1,8 +1,8 @@
 ## mrepl.vim
 
 Adds a modal REPL protocol to Neovim. A REPL protocol defines a line format and
-a block format for commands send to a REPL. Switching the mode will switch the
-line and block formats.
+a block format for statements to be evaluated in a REPL. Switching the mode
+will switch the line and block formats.
 
 ### Installation
 
