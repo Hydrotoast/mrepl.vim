@@ -9,12 +9,12 @@ will switch the line and block formats.
 Depending on your plugin manager, the installation procedure may vary. We list
 some common plugin manager configurations below.
 
-For `vim-plug`, add the following configuration.
+For [vim-plug][vim-plug], add the following configuration.
 ```
 Plug 'Hydrotoast/mrepl.vim'
 ```
 
-For `Vundle`, add the following configuration.
+For [Vundle][vundle], add the following configuration.
 ```
 Plugin 'Hydrotoast/mrepl.vim'
 ```
@@ -41,3 +41,6 @@ To map keys to the behaviors, the following mappings are available.
 | `<Plug>ReplBind`        | `<leader>rb`  | Binds the buffer to a terminal. |
 | `<Plug>ReplSwitchMode`  | `<leader>rs`  | Switches the REPL mode.         |
 | `<Plug>ReplEval`        | `<leader>re`  | Evaluates selections.           |
+
+[vim-plug]: https://github.com/junegunn/vim-plug
+[vundle]: https://github.com/VundleVim/Vundle.vim
