@@ -7,8 +7,7 @@ function! mrepl#buffer#Bind(repl_bufname) abort
   let repl_channel_id = getbufvar(repl_buf_nr, '&channel')
 
   if repl_channel_id == 0
-    echoerr 'Failed to bind to a terminal. '
-          \ . 'The selected buffer is not a terminal.'
+    echo 'The selected buffer is not a terminal.'
     return
   end
 
@@ -20,9 +19,8 @@ endfunction
 function! mrepl#buffer#EvalSelection(selection) abort
 
   if !exists('b:repl_channel_id')
-    echoerr 'Failed to evaluate block at the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind {repl_bufname} to bind the terminal.'
+    echo 'The buffer is not bound to a terminal. '
+          \ . 'Use :ReplBind {repl_bufname} to bind the buffer.'
     return
   end
 
@@ -41,17 +39,9 @@ endfunction
 
 
 function! mrepl#buffer#SwitchMode(mode) abort
-  
-  if !exists('b:repl_channel_id')
-    echoerr 'Failed to send block to the terminal. '
-          \ . 'The terminal is not bound. '
-          \ . 'Use ReplBind <repl_bufname> to bind the terminal.'
-    return
-  end
 
   if !mrepl#modes#Exists(a:mode)
-    echoerr 'Failed to switch the REPL to ' . a:mode . '.'
-          \ . 'The mode has not been registered.'
+    echo 'The mode has {' . a:mode . '} not been registered.'
     return
   end
 

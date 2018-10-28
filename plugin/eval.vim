@@ -35,7 +35,7 @@ function! s:Operate(type)
 
   " Retrieve the selection for the operator.
   let selection = <SID>GetSelection(a:type)
-  
+
   " Return early if there is no selection.
   if empty(selection)
     return
